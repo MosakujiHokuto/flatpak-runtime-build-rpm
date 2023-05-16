@@ -7,4 +7,4 @@ msg() {
 
 msg "Flatpak post build hook invoked"
 
-ls -r /usr/src/packages
+ls -R /usr/src/packages/SOURCES
