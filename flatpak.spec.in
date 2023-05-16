@@ -1,0 +1,29 @@
+Name:           __NAME__-v__VERSION__
+Version:        __VERSION__
+Release:        0
+Summary:        Flatpak image %{name}
+License:        unknown
+Url:            https://docs.flatpak.org/en/latest/available-runtimes.html
+Source0:        %{name}.__ARCH__.tar.gz
+BuildRoot:      %{_tmppath}/%{name}-build
+
+%description
+
+An rpm version of the flatpak image %{name}
+
+%prep
+
+%build
+
+%install
+
+%global __os_install_post /usr/lib/rpm/brp-compress
+
+mkdir -p %{buildroot}/var/lib/flatpak/tars
+cp %SOURCE0 %{buildroot}/var/lib/flatpak/tars/
+
+%files
+/var/lib/flatpak
+/var/lib/flatpak/tars
+
+%changelog
