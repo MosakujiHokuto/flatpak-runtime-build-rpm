@@ -54,7 +54,6 @@ commit_subtree() {
     rm -rf $tmpdir
 }
 
-cd `mktemp -d`
 
 msg "Generating metadata..."
 cat >>metadata <<EOF
@@ -89,5 +88,5 @@ ostree pull-local --repo=exportrepo repo\
        runtime/$FLATPAK_NAME/$FLATPAK_ARCH/$FLATPAK_VERSION
 flatpak build-update-repo exportrepo
 msg "Building and exporting bundle..."
-flatpak build-bundle --runtime exportrepo platform.flatpak \
+flatpak build-bundle --runtime exportrepo $FLATPAK_NAME.flatpak \
 	$FLATPAK_NAME $FLATPAK_VERSION
