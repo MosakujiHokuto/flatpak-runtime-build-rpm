@@ -23,8 +23,13 @@ cd `mktemp -d`
 msg "Entering fakeroot environment..."
 fakeroot /usr/lib/build/runtime_build_rpm/postbuild_fakeroot.sh
 msg "Leaving fakeroot environment..."
-mkdir -p /usr/src/packages/OTHER
-if [ -f $FLATPAK_NAME.flatpak ]; then
-    msg "Publishing output file..."
-    mv $FLATPAK_NAME.flatpak /usr/src/packages/OTHER/
-fi
+
+msg "Installing runtime into build environment..."
+sudo flatpak remote-add --no-gpg-verify exportrepo exportrepo
+sudo flatpak install --noninteractive --assumeyes exportrepo $FLATPAK_NAME
+
+msg "Creating and publishing tarball..."
+TARFILE=$FLATPAK_NAME-v$FLATPAK_VERSION.$FLATPAK_ARCH.tar.gz
+sudo tar cvpaf $TARFILE -C /var/lib/flatpak/runtime \
+     /var/lib/flatpak/runtime/$FLATPAK_NAME/$FLATPAK_ARCH/$FLATPAK_VERSION
+mv $TARFILE /usr/src/packages/OTHER
