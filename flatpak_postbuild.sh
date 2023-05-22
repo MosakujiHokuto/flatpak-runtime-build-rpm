@@ -20,8 +20,8 @@ prepare_to_ostree() {
     sudo ln -s ../sysroot/ostree $dst/ostree
     sudo ln -s ../sysroot/tmp $dst/tmp
 
-    sudo mv $src/usr $dst/usr
-    sudo mv $src/etc $dst/etc
+    sudo cp -r $src/usr $dst/usr
+    sudo cp -r $src/etc $dst/etc
     sudo ln -s var/lib/rpm $dst/usr/share/rpm
     sudo cp -r $dst/usr/local $dst/var/usrlocal
 }
