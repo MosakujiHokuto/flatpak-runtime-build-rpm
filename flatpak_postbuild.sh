@@ -108,6 +108,7 @@ ostree pull-local --repo=exportrepo repo\
 flatpak build-update-repo exportrepo
 
 msg "Installing runtime into build environment..."
+sudo flatpak repair
 sudo flatpak remote-add --no-gpg-verify exportrepo exportrepo
 sudo flatpak install --noninteractive --assumeyes exportrepo $FLATPAK_NAME
 
