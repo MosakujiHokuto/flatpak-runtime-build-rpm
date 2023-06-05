@@ -107,6 +107,12 @@ ostree pull-local --repo=exportrepo repo\
        runtime/$FLATPAK_NAME/$FLATPAK_ARCH/$FLATPAK_VERSION
 flatpak build-update-repo exportrepo
 
+msg "Export flatpak bundle..."
+flatpak build-bundle --runtime exportrepo $FLATPAK_NAME.flatpak\
+	$FLATPAK_NAME $FLATPAK_VERSION
+mkdir -p /usr/src/packages/OTHER
+mv $FLATPAK_NAME.flatpak /usr/src/packages/OTHER/
+
 msg "Installing runtime into build environment..."
 sudo mkdir /var/lib/flatpak/runtime
 ls -R /var/lib/flatpak/
@@ -129,5 +135,4 @@ sed -e "s/__NAME__/$FLATPAK_NAME/g" \
 rpmbuild -ba /usr/lib/build/runtime_build_rpm/flatpak.spec
 
 msg "Exporting rpm..."
-mkdir -p /usr/src/packages/OTHER
-mv /usr/src/packages/RPMS/$FLATPAK_ARCH/*.rpm /usr/src/packages/OTHER
+mv /usr/src/packages/RPMS/$FLATPAK_ARCH/*.rpm /usr/src/packages/OTHER/
