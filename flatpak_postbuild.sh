@@ -130,4 +130,4 @@ rpmbuild -ba /usr/lib/build/runtime_build_rpm/flatpak.spec
 
 msg "Exporting rpm..."
 mkdir -p /usr/src/packages/OTHER
-ls -R $TOPDIR/RPMS/
+mv /usr/src/packages/RPMS/$FLATPAK_ARCH/*.rpm /usr/src/packages/OTHER
