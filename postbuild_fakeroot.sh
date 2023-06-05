@@ -23,8 +23,8 @@ prepare_to_ostree() {
     ln -s ../sysroot/ostree $dst/ostree
     ln -s ../sysroot/tmp $dst/tmp
 
-    cp -r $src/usr $dst/usr
-    cp -r $src/etc $dst/etc
+    mv $src/usr $dst/usr
+    mv $src/etc $dst/etc
     ln -s var/lib/rpm $dst/usr/share/rpm
     cp -r $dst/usr/local $dst/var/usrlocal
 }
