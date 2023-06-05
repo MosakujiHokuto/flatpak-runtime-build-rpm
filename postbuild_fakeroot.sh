@@ -29,7 +29,9 @@ prepare_to_ostree() {
     cp -r $dst/usr/local $dst/var/usrlocal
 }
 
-commit_subtree() {
+commit_subtree() (
+    set -x
+
     local src=$1
     shift
     local dst=$1
@@ -52,7 +54,7 @@ commit_subtree() {
 			  $tmpdir --add-metadata-string xa.metadata=XXX
 
     rm -rf $tmpdir
-}
+)
 
 
 msg "Generating metadata..."
