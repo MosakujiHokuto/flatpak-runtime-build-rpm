@@ -108,11 +108,14 @@ ostree pull-local --repo=exportrepo repo\
 flatpak build-update-repo exportrepo
 
 msg "Installing runtime into build environment..."
-flatpak remote-add --user --no-gpg-verify exportrepo exportrepo
-flatpak install --user --noninteractive --assumeyes exportrepo $FLATPAK_NAME
+sudo mkdir /var/lib/flatpak/runtime
+ls -R /var/lib/flatpak/
+sudo flatpak repair --system -v --ostree-verbose
+sudo flatpak remote-add --no-gpg-verify exportrepo exportrepo
+sudo flatpak install --noninteractive --assumeyes exportrepo $FLATPAK_NAME
 
 msg "Creating and publishing tarball..."
 TARFILE=$FLATPAK_NAME-v$FLATPAK_VERSION.$FLATPAK_ARCH.tar.gz
-sudo tar cvpaf $TARFILE -C ~/.local/share/flatpak/runtime \
-     $FLATPAK_NAME/$FLATPAK_ARCH/$FLATPAK_VERSION
+sudo tar cvpaf $TARFILE -C /var/lib/flatpak/runtime \
+     /var/lib/flatpak/runtime/$FLATPAK_NAME/$FLATPAK_ARCH/$FLATPAK_VERSION
 mv $TARFILE /usr/src/packages/OTHER
