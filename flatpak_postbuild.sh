@@ -39,7 +39,7 @@ commit_subtree() {
     cp $metadata $tmpdir/metadata
     while (( "$#" )); do
 	mkdir -p `dirname $tmpdir/$2`
-	ostree checkout --repo=repo --subpath=$1 -U $src $tmpdir/42
+	ostree checkout --repo=repo --subpath=$1 -U $src $tmpdir/$2
 	shift 2;
     done
 
