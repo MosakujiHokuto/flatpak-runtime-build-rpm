@@ -114,8 +114,20 @@ sudo flatpak repair --system -v --ostree-verbose
 sudo flatpak remote-add --no-gpg-verify exportrepo exportrepo
 sudo flatpak install --noninteractive --assumeyes exportrepo $FLATPAK_NAME
 
-msg "Creating and publishing tarball..."
+msg "Creating tarball..."
 TARFILE=$FLATPAK_NAME-v$FLATPAK_VERSION.$FLATPAK_ARCH.tar.gz
-sudo tar cvpaf $TARFILE -C /var/lib/flatpak/runtime \
-     /var/lib/flatpak/runtime/$FLATPAK_NAME/$FLATPAK_ARCH/$FLATPAK_VERSION
-mv $TARFILE /usr/src/packages/OTHER
+sudo tar czf $TARFILE -C /var/lib/flatpak/runtime \
+     $FLATPAK_NAME/$FLATPAK_ARCH/$FLATPAK_VERSION
+mv $TARFILE /usr/src/packages/SOURCES
+
+msg "Building rpm..."
+sed -e "s/__NAME__/$FLATPAK_NAME/g" \
+    -e "s/__VERSION__/$FLATPAK_VERSION/g" \
+    -e "s/__ARCH__/$FLATPAK_ARCH/g" \
+    < /usr/lib/build/runtime_build_rpm/flatpak.spec.in \
+    > /usr/lib/build/runtime_build_rpm/flatpak.spec
+rpmbuild -ba /usr/lib/build/runtime_build_rpm/flatpak.spec
+
+msg "Exporting rpm..."
+mkdir -p /usr/src/packages/OTHER
+ls -R $TOPDIR/RPMS/
